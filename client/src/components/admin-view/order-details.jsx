@@ -12,6 +12,7 @@ import {
 } from "@/store/admin/order-slice";
 import { useToast } from "../ui/use-toast";
 
+// Initial form data for order status update
 const initialFormData = {
   status: "",
 };
@@ -22,8 +23,7 @@ function AdminOrderDetailsView({ orderDetails }) {
   const dispatch = useDispatch();
   const { toast } = useToast();
 
-  console.log(orderDetails, "orderDetailsorderDetails");
-
+  // Handle order status update on form submission
   function handleUpdateStatus(event) {
     event.preventDefault();
     const { status } = formData;
@@ -46,6 +46,7 @@ function AdminOrderDetailsView({ orderDetails }) {
     <DialogContent className="sm:max-w-[600px]">
       <div className="grid gap-6">
         <div className="grid gap-2">
+          {/* Displaying order details */}
           <div className="flex mt-6 items-center justify-between">
             <p className="font-medium">Order ID</p>
             <Label>{orderDetails?._id}</Label>
@@ -86,6 +87,7 @@ function AdminOrderDetailsView({ orderDetails }) {
         <Separator />
         <div className="grid gap-4">
           <div className="grid gap-2">
+            {/* Displaying order items */}
             <div className="font-medium">Order Details</div>
             <ul className="grid gap-3">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
@@ -102,6 +104,7 @@ function AdminOrderDetailsView({ orderDetails }) {
         </div>
         <div className="grid gap-4">
           <div className="grid gap-2">
+            {/* Displaying shipping info */}
             <div className="font-medium">Shipping Info</div>
             <div className="grid gap-0.5 text-muted-foreground">
               <span>{user.userName}</span>
@@ -114,6 +117,7 @@ function AdminOrderDetailsView({ orderDetails }) {
           </div>
         </div>
 
+        {/* Order status update form */}
         <div>
           <CommonForm
             formControls={[

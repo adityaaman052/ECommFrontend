@@ -22,24 +22,33 @@ import { Skeleton } from "@/components/ui/skeleton";
 import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
+import './index.css'; 
+import Footer from "./components/Footer";
 
 function App() {
+  // Retrieve auth data (user info, loading state, and authentication status)
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
+  
+  // Dispatch function to trigger auth checks
   const dispatch = useDispatch();
 
+  // Check if the user is authenticated when the component is mounted
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
 
+  // Show skeleton loading state while the authentication state is being checked
   if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
 
+  // Log the current state for debugging purposes (could remove this later)
   console.log(isLoading, user);
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
+        {/* Check for authentication before rendering the Home page */}
         <Route
           path="/"
           element={
@@ -49,6 +58,8 @@ function App() {
             ></CheckAuth>
           }
         />
+        
+        {/* Auth routes for login and registration */}
         <Route
           path="/auth"
           element={
@@ -60,6 +71,8 @@ function App() {
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
         </Route>
+
+        {/* Admin routes with layout */}
         <Route
           path="/admin"
           element={
@@ -73,6 +86,8 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>
+
+        {/* Shopping routes with layout */}
         <Route
           path="/shop"
           element={
@@ -89,9 +104,16 @@ function App() {
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="search" element={<SearchProducts />} />
         </Route>
+
+        {/* Page for users who are not authenticated */}
         <Route path="/unauth-page" element={<UnauthPage />} />
+        
+        {/* Fallback route for undefined paths */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      
+      {/* Footer component */}
+      <Footer />
     </div>
   );
 }

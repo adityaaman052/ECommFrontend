@@ -1,4 +1,4 @@
-import { StarIcon } from "lucide-react";
+import { StarIcon, Share2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -24,8 +24,6 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const { toast } = useToast();
 
   function handleRatingChange(getRating) {
-    console.log(getRating, "getRating");
-
     setRating(getRating);
   }
 
@@ -43,7 +41,6 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             title: `Only ${getQuantity} quantity can be added for this item`,
             variant: "destructive",
           });
-
           return;
         }
       }
@@ -61,6 +58,8 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           title: "Product is added to cart",
         });
       }
+    }).catch((error) => {
+      console.error("Add to cart error:", error);
     });
   }
 
@@ -81,27 +80,52 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         reviewValue: rating,
       })
     ).then((data) => {
-      if (data.payload.success) {
+      console.log('Review Response:', data);  // Log the response
+      if (data?.payload?.success) {  // Ensure data is not undefined
         setRating(0);
         setReviewMsg("");
         dispatch(getReviews(productDetails?._id));
         toast({
           title: "Review added successfully!",
         });
+      } else {
+        toast({
+          title: "Failed to add review.",
+          variant: "destructive",
+        });
       }
+    }).catch((error) => {
+      console.error('Review submission failed:', error);  // Catch and log errors
+      toast({
+        title: "Error submitting review",
+        variant: "destructive",
+      });
     });
+  }
+
+  function handleShare() {
+    const productURL = `${window.location.origin}/products/${productDetails?._id}`;
+    if (navigator.share) {
+      navigator
+        .share({
+          title: productDetails?.title,
+          text: `Check out this amazing product: ${productDetails?.title}! \n\n${productDetails?.description}`,
+          url: productURL,
+        })
+        .then(() => console.log("Product shared successfully!"))
+        .catch((error) => console.error("Error sharing product:", error));
+    } else {
+      alert("Sharing is not supported on this browser.");
+    }
   }
 
   useEffect(() => {
     if (productDetails !== null) dispatch(getReviews(productDetails?._id));
   }, [productDetails]);
 
-  console.log(reviews, "reviews");
-
   const averageReview =
     reviews && reviews.length > 0
-      ? reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
-        reviews.length
+      ? reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) / reviews.length
       : 0;
 
   return (
@@ -116,7 +140,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             className="aspect-square w-full object-cover"
           />
         </div>
-        <div className="">
+        <div>
           <div>
             <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
             <p className="text-muted-foreground text-2xl mb-5 mt-4">
@@ -145,7 +169,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               ({averageReview.toFixed(2)})
             </span>
           </div>
-          <div className="mt-5 mb-5">
+          <div className="mt-5 flex items-center gap-2">
             {productDetails?.totalStock === 0 ? (
               <Button className="w-full opacity-60 cursor-not-allowed">
                 Out of Stock
@@ -163,14 +187,20 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 Add to Cart
               </Button>
             )}
+            {/* Add Share Button */}
+            <Button onClick={handleShare}>
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Product
+            </Button>
           </div>
-          <Separator />
+          <Separator className="my-5" />
+          {/* Reviews Section */}
           <div className="max-h-[300px] overflow-auto">
             <h2 className="text-xl font-bold mb-4">Reviews</h2>
             <div className="grid gap-6">
               {reviews && reviews.length > 0 ? (
                 reviews.map((reviewItem) => (
-                  <div className="flex gap-4">
+                  <div className="flex gap-4" key={reviewItem._id}>
                     <Avatar className="w-10 h-10 border">
                       <AvatarFallback>
                         {reviewItem?.userName[0].toUpperCase()}

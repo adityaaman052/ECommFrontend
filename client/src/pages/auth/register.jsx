@@ -5,6 +5,7 @@ import { registerUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const initialState = {
   userName: "",
@@ -35,24 +36,32 @@ function AuthRegister() {
     });
   }
 
-  console.log(formData);
-
   return (
-    <div className="mx-auto w-full max-w-md space-y-6">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Create new account
-        </h1>
+    <motion.div
+      className="mx-auto w-full max-w-md space-y-6 p-6 rounded-lg shadow-lg border"
+      style={{ backgroundColor: "#006663", color: "#111111" }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div 
+        className="text-center" 
+        initial={{ opacity: 0, scale: 0.8 }} 
+        animate={{ opacity: 1, scale: 1 }} 
+        transition={{ duration: 0.6 }}
+      >
+        <h1 className="text-3xl font-bold tracking-tight text-white">Create new account</h1>
         <p className="mt-2">
-          Already have an account
+          Already have an account?
           <Link
             className="font-medium ml-2 text-primary hover:underline"
             to="/auth/login"
+            style={{ color: "#34E89E" }}
           >
             Login
           </Link>
         </p>
-      </div>
+      </motion.div>
       <CommonForm
         formControls={registerFormControls}
         buttonText={"Sign Up"}
@@ -60,7 +69,7 @@ function AuthRegister() {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
-    </div>
+    </motion.div>
   );
 }
 

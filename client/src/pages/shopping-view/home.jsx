@@ -1,21 +1,22 @@
 import { Button } from "@/components/ui/button";
-import bannerOne from "../../assets/banner-1.png";
-import bannerTwo from "../../assets/banner-2.webp";
-import bannerThree from "../../assets/banner-3.webp";
+import bannerOne from "../../assets/banner/banner4.png";
+import bannerTwo from "../../assets/slider1.jpg";
+import bannerThree from "../../assets/slider2.jpg";
 import {
-  Airplay,
-  BabyIcon,
+  Church,
   ChevronLeftIcon,
   ChevronRightIcon,
-  CloudLightning,
-  Heater,
-  Images,
-  Shirt,
-  ShirtIcon,
-  ShoppingBasket,
-  UmbrellaIcon,
-  WashingMachine,
-  WatchIcon,
+  Shell,
+  LoaderPinwheel,
+  Castle,
+  Command,
+  Gem,
+  Atom,
+  BookHeart,
+  Boxes,
+  Sunset,
+  Smile,
+  SunSnow,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
@@ -30,22 +31,23 @@ import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/components/ui/use-toast";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
+import { motion } from "framer-motion"; // Ensure you have framer-motion installed
 
 const categoriesWithIcon = [
-  { id: "men", label: "Men", icon: ShirtIcon },
-  { id: "women", label: "Women", icon: CloudLightning },
-  { id: "kids", label: "Kids", icon: BabyIcon },
-  { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
+  { id: "formal", label: "Formal", icon: Gem },
+  { id: "casual", label: "Casual", icon: Shell },
+  { id: "evening", label: "Evening", icon: Sunset }, // Evening icon changed
+  { id: "romance", label: "Romance", icon: BookHeart }, // Romance icon changed
+  { id: "cultural", label: "Cultural", icon: Church }, // Cultural icon changed
 ];
 
 const brandsWithIcon = [
-  { id: "nike", label: "Nike", icon: Shirt },
-  { id: "adidas", label: "Adidas", icon: WashingMachine },
-  { id: "puma", label: "Puma", icon: ShoppingBasket },
-  { id: "levi", label: "Levi's", icon: Airplay },
-  { id: "zara", label: "Zara", icon: Images },
-  { id: "h&m", label: "H&M", icon: Heater },
+  { id: "tomford", label: "Tom Ford", icon: Atom }, // Tom Ford icon changed
+  { id: "calvinklein", label: "Calvin Klein", icon: Boxes },
+  { id: "gucci", label: "Gucci", icon: Castle },
+  { id: "saintlaurent", label: "Saint Laurent", icon: Command },
+  { id: "giorgioarmani", label: "Giorgio Armani", icon: LoaderPinwheel },
+  { id: "creed", label: "Creed", icon: SunSnow }, // Creed icon changed to smile
 ];
 
 function ShoppingHome() {
@@ -109,7 +111,7 @@ function ShoppingHome() {
       setCurrentSlide(
         (prevSlide) => (prevSlide + 1) % combinedFeatureImages.length
       );
-    }, 15000);
+    }, 10000); // Reduced to 10 seconds
 
     return () => clearInterval(timer);
   }, [combinedFeatureImages]);
@@ -129,7 +131,7 @@ function ShoppingHome() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative w-full h-[600px] overflow-hidden">
+      <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-r from-[#006663] via-[#111111] to-[#006663]">
         {combinedFeatureImages.map((slide, index) => (
           <img
             src={slide.image}
@@ -140,13 +142,34 @@ function ShoppingHome() {
             } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
           />
         ))}
+
+        {/* Stylish text when no banner is displayed */}
+        {combinedFeatureImages.length > 0 && !combinedFeatureImages[currentSlide]?.image && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              className="text-center text-white"
+            >
+              <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-pulse">
+                Grand Welcome to Fragrencia! 🌸
+              </h1>
+              <p className="text-lg md:text-xl">
+                Explore our exquisite perfume collection and find your signature scent!{" "}
+                <Smile className="inline-block text-green-400" />
+              </p>
+            </motion.div>
+          </div>
+        )}
+
         <Button
           variant="outline"
           size="icon"
           onClick={() =>
             setCurrentSlide(
               (prevSlide) =>
-                (prevSlide - 1 + combinedFeatureImages.length) %
+                (prevSlide - 1 + combinedFeatureImages.length) % 
                 combinedFeatureImages.length
             )
           }
@@ -170,7 +193,7 @@ function ShoppingHome() {
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
-            Shop by category
+            Shop by Events
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categoriesWithIcon.map((categoryItem) => (

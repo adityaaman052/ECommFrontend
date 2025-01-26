@@ -12,8 +12,9 @@ const Separator = React.forwardRef((
     decorative={decorative}
     orientation={orientation}
     className={cn(
-      "shrink-0 bg-border",
+      "shrink-0 bg-gradient-to-r from-emerald-400 to-teal-500", // Gradient effect
       orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+      "transition-all duration-300 ease-in-out", // Smooth transition for effects
       className
     )}
     {...props} />

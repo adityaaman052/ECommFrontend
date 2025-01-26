@@ -20,30 +20,39 @@ import {
 import { Badge } from "../ui/badge";
 
 function AdminOrdersView() {
+  // State for controlling the details dialog visibility
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  
+  // Getting the list of orders and order details from the Redux store
   const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
   const dispatch = useDispatch();
 
+  // Function to fetch order details for a specific order
   function handleFetchOrderDetails(getId) {
     dispatch(getOrderDetailsForAdmin(getId));
   }
 
+  // Fetch all orders for the admin when the component is mounted
   useEffect(() => {
     dispatch(getAllOrdersForAdmin());
   }, [dispatch]);
 
   console.log(orderDetails, "orderList");
 
+  // Open the details dialog if orderDetails is available
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
 
   return (
     <Card>
+      {/* Card Header displaying the title */}
       <CardHeader>
         <CardTitle>All Orders</CardTitle>
       </CardHeader>
+      
       <CardContent>
+        {/* Table to display the list of orders */}
         <Table>
           <TableHeader>
             <TableRow>
@@ -56,13 +65,16 @@ function AdminOrdersView() {
               </TableHead>
             </TableRow>
           </TableHeader>
+          
           <TableBody>
+            {/* If there are orders, loop through them and display each order */}
             {orderList && orderList.length > 0
               ? orderList.map((orderItem) => (
-                  <TableRow>
+                  <TableRow key={orderItem?._id}>
                     <TableCell>{orderItem?._id}</TableCell>
                     <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
                     <TableCell>
+                      {/* Badge to display the status of the order */}
                       <Badge
                         className={`py-1 px-3 ${
                           orderItem?.orderStatus === "confirmed"
@@ -77,6 +89,7 @@ function AdminOrdersView() {
                     </TableCell>
                     <TableCell>${orderItem?.totalAmount}</TableCell>
                     <TableCell>
+                      {/* Button to open the dialog and view order details */}
                       <Dialog
                         open={openDetailsDialog}
                         onOpenChange={() => {
@@ -91,6 +104,7 @@ function AdminOrdersView() {
                         >
                           View Details
                         </Button>
+                        {/* Order details view modal */}
                         <AdminOrderDetailsView orderDetails={orderDetails} />
                       </Dialog>
                     </TableCell>

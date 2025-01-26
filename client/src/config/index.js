@@ -58,11 +58,11 @@ export const registerFormControls = [
       name: "category",
       componentType: "select",
       options: [
-        { id: "men", label: "Men" },
-        { id: "women", label: "Women" },
-        { id: "kids", label: "Kids" },
-        { id: "accessories", label: "Accessories" },
-        { id: "footwear", label: "Footwear" },
+        { id: "formal", label: "Formal" },
+        { id: "casual", label: "Casual" },
+        { id: "evening", label: "Evening" },
+        { id: "romance", label: "Romance" },
+        { id: "cultural", label: "Cultural" },
       ],
     },
     {
@@ -70,12 +70,12 @@ export const registerFormControls = [
       name: "brand",
       componentType: "select",
       options: [
-        { id: "nike", label: "Nike" },
-        { id: "adidas", label: "Adidas" },
-        { id: "puma", label: "Puma" },
-        { id: "levi", label: "Levi's" },
-        { id: "zara", label: "Zara" },
-        { id: "h&m", label: "H&M" },
+        { id: "tomford", label: "Tom Ford" },
+        { id: "calvinklein", label: "Calvin Klein" },
+        { id: "gucci", label: "Gucci" },
+        { id: "saintlaurent", label: "Saint Laurent" },
+        { id: "giorgioarmani", label: "Giorgio Armani" },
+        { id: "creed", label: "Creed" },
       ],
     },
     {
@@ -113,28 +113,28 @@ export const registerFormControls = [
       path: "/shop/listing",
     },
     {
-      id: "men",
-      label: "Men",
+      id: "formal",
+      label: "Formal",
       path: "/shop/listing",
     },
     {
-      id: "women",
-      label: "Women",
+      id: "casual",
+      label: "Casual",
       path: "/shop/listing",
     },
     {
-      id: "kids",
-      label: "Kids",
+      id: "evening",
+      label: "Evening",
       path: "/shop/listing",
     },
     {
-      id: "footwear",
-      label: "Footwear",
+      id: "romance",
+      label: "Romance",
       path: "/shop/listing",
     },
     {
-      id: "accessories",
-      label: "Accessories",
+      id: "cultural",
+      label: "Cultural",
       path: "/shop/listing",
     },
     {
@@ -145,37 +145,37 @@ export const registerFormControls = [
   ];
   
   export const categoryOptionsMap = {
-    men: "Men",
-    women: "Women",
-    kids: "Kids",
-    accessories: "Accessories",
-    footwear: "Footwear",
+    formal: "Formal",
+    casual: "Casual",
+    evening: "Evening",
+    romance: "Romance",
+    cultural: "Cultural",
   };
   
   export const brandOptionsMap = {
-    nike: "Nike",
-    adidas: "Adidas",
-    puma: "Puma",
-    levi: "Levi",
-    zara: "Zara",
-    "h&m": "H&M",
+    tomford: "Tom Ford",
+    calvinklein: "Calvin Klein",
+    gucci: "Gucci",
+    saintlaurent: "Saint Laurent",
+    giorgioarmani: "Giorgio Armani",
+    creed : "Creed",
   };
   
   export const filterOptions = {
     category: [
-      { id: "men", label: "Men" },
-      { id: "women", label: "Women" },
-      { id: "kids", label: "Kids" },
-      { id: "accessories", label: "Accessories" },
-      { id: "footwear", label: "Footwear" },
+      { id: "formal", label: "Formal" },
+      { id: "casual", label: "Casual" },
+      { id: "evening", label: "Evening" },
+      { id: "romance", label: "Romance" },
+      { id: "cultural", label: "Cultural" },
     ],
     brand: [
-      { id: "nike", label: "Nike" },
-      { id: "adidas", label: "Adidas" },
-      { id: "puma", label: "Puma" },
-      { id: "levi", label: "Levi's" },
-      { id: "zara", label: "Zara" },
-      { id: "h&m", label: "H&M" },
+      { id: "tomford", label: "Tom Ford" },
+      { id: "calvinklein", label: "Calvin Klein" },
+      { id: "gucci", label: "Gucci" },
+      { id: "saintlaurent", label: "Saint Laurent" },
+      { id: "giorgioarmani", label: "Giorgio Armani" },
+      { id: "creed", label: "Creed" },
     ],
   };
   

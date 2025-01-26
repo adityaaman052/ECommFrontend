@@ -1,5 +1,5 @@
 import Address from "@/components/shopping-view/address";
-import img from "../../assets/account.jpg";
+import img from "@/assets/slider1.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import UserCartItemsContent from "@/components/shopping-view/cart-items-content";
 import { Button } from "@/components/ui/button";
@@ -82,7 +82,7 @@ function ShoppingCheckout() {
     };
 
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sangam");
+      console.log(data, "aditya");
       if (data?.payload?.success) {
         setIsPaymemntStart(true);
       } else {
