@@ -74,10 +74,43 @@ The admin panel enables administrators to:
 ## Folder Structure 📁
 
 ### **Client Side** (React)
-client/ ├── public/ # Public assets (images, icons, etc.) ├── src/ │ ├── assets/ # Static assets like images, fonts, etc. │ ├── components/ # React components for different views │ │ ├── admin-view/ # Admin-specific components │ │ ├── auth/ # Authentication components (Login, Signup) │ │ ├── common/ # Common components like Header, Footer, etc. │ │ ├── shopping-view/ # Shopping page components (Product Cards, etc.) │ │ ├── ui/ # SHADCN UI components │ │ └── footer/ # Footer component │ ├── config/ # Configuration files for environment settings │ ├── lib/ # Utility functions (e.g., API requests, helpers) │ ├── pages/ # Pages mapped to routes │ │ ├── admin-view/ # Admin pages like Dashboard, Order Management │ │ ├── auth/ # Auth-related pages (Login, Register, etc.) │ │ ├── page-not-found/ # 404 Page Not Found │ │ ├── shopping-view/ # Shopping pages (Product List, Cart, etc.) │ │ └── unauth/ # Unauthenticated user pages (Access Denied) │ ├── store/ # Redux state management (Slices for auth, cart, etc.) │ │ ├── auth-slice/ # Handles auth state (user login/logout) │ │ ├── admin/ # Admin-related state (product management) │ │ ├── common-slice/ # Common state management (cart, etc.) │ │ ├── shop/ # Shop-related state (products, orders, cart) │ ├── app.jsx # Main App component (entry point for React app)
-
 ### **Server Side** (Node.js/Express)
-server/ ├── controllers/ # Logic for handling incoming API requests ├── helpers/ # Utility functions (e.g., JWT token validation) ├── models/ # Mongoose models for database schemas (Product, User, etc.) ├── routes/ # Express routes to handle API endpoints └── server.js # Main entry point for the server (starts Express app)
+client/
+│
+├── public/                        # Public assets (images, icons, etc.)
+│
+├── src/
+│   ├── assets/                    # Static assets like images, fonts, etc.
+│   ├── components/                # React components for different views
+│   │   ├── admin-view/            # Admin-specific components
+│   │   ├── auth/                  # Authentication components (Login, Signup)
+│   │   ├── common/                # Common components like Header, Footer, etc.
+│   │   ├── shopping-view/         # Shopping page components (Product Cards, etc.)
+│   │   ├── ui/                    # SHADCN UI components
+│   │   └── footer/                # Footer component
+│   ├── config/                    # Configuration files for environment settings
+│   ├── lib/                       # Utility functions (e.g., API requests, helpers)
+│   ├── pages/                     # Pages mapped to routes
+│   │   ├── admin-view/            # Admin pages like Dashboard, Order Management
+│   │   ├── auth/                  # Auth-related pages (Login, Register, etc.)
+│   │   ├── page-not-found/        # 404 Page Not Found
+│   │   ├── shopping-view/         # Shopping pages (Product List, Cart, etc.)
+│   │   └── unauth/                # Unauthenticated user pages (Access Denied)
+│   ├── store/                     # Redux state management (Slices for auth, cart, etc.)
+│   │   ├── auth-slice/            # Handles auth state (user login/logout)
+│   │   ├── admin/                 # Admin-related state (product management)
+│   │   ├── common-slice/          # Common state management (cart, etc.)
+│   │   ├── shop/                  # Shop-related state (products, orders, cart)
+│   ├── app.jsx                    # Main App component (entry point for React app)
+│
+server/
+│
+├── controllers/                   # Logic for handling incoming API requests
+├── helpers/                       # Utility functions (e.g., JWT token validation)
+├── models/                        # Mongoose models for database schemas (Product, User, etc.)
+├── routes/                        # Express routes to handle API endpoints
+└── server.js                      # Main entry point for the server (starts Express app)
+
 
 ## How the Application Works 💻
 
