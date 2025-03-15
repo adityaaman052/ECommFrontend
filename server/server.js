@@ -19,51 +19,52 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
-// Database connection using Mongoose with credentials from .env file
+// ✅ Improved MongoDB Connection for Local & Vercel
 mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.log(error));
+  .connect(process.env.MONGO_URI, { bufferCommands: false })
+  .then(() => console.log("✅ MongoDB connected successfully"))
+  .catch((error) => console.error("❌ MongoDB connection error:", error));
 
 // Initialize Express app
 const app = express();
 
-// Define the port for the server to run on (from .env or default to 5000)
-const PORT = process.env.PORT || 5000;
+// ✅ Fix CORS Allowed Origins for Local & Vercel
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean);
 
-// Set up CORS (Cross-Origin Resource Sharing) configuration
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow frontend requests from this origin
-    methods: ["GET", "POST", "DELETE", "PUT"], // Allow these HTTP methods
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ], // Allow these headers
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: allowedOrigins.length ? allowedOrigins : "*",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cache-Control"],
+    credentials: true,
   })
 );
 
 // Use middlewares for cookie parsing and JSON body parsing
-app.use(cookieParser()); 
+app.use(cookieParser());
 app.use(express.json());
 
 // Define routes for different API endpoints
-app.use("/api/auth", authRouter); // Auth-related routes
-app.use("/api/admin/products", adminProductsRouter); // Admin product routes
-app.use("/api/admin/orders", adminOrderRouter); // Admin order routes
+app.use("/api/auth", authRouter);
+app.use("/api/admin/products", adminProductsRouter);
+app.use("/api/admin/orders", adminOrderRouter);
 
-app.use("/api/shop/products", shopProductsRouter); // Shop product routes
-app.use("/api/shop/cart", shopCartRouter); // Shop cart routes
-app.use("/api/shop/address", shopAddressRouter); // Shop address routes
-app.use("/api/shop/order", shopOrderRouter); // Shop order routes
-app.use("/api/shop/search", shopSearchRouter); // Shop search routes
-app.use("/api/shop/review", shopReviewRouter); // Shop review routes
+app.use("/api/shop/products", shopProductsRouter);
+app.use("/api/shop/cart", shopCartRouter);
+app.use("/api/shop/address", shopAddressRouter);
+app.use("/api/shop/order", shopOrderRouter);
+app.use("/api/shop/search", shopSearchRouter);
+app.use("/api/shop/review", shopReviewRouter);
 
-app.use("/api/common/feature", commonFeatureRouter); // Common feature routes
+app.use("/api/common/feature", commonFeatureRouter);
 
-// Start the server
-app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+// ✅ Fix: Handle Local & Vercel Deployment
+const PORT = process.env.PORT || 3000;
+
+// Only listen when running locally, NOT on Vercel
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+}
+
+// ✅ Export app for Vercel
+module.exports = app;
