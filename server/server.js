@@ -19,7 +19,7 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
-// ✅ Improved MongoDB Connection for Local & Vercel
+// ✅ Improved MongoDB Connection for Local & Render
 mongoose
   .connect(process.env.MONGO_URI, { bufferCommands: false })
   .then(() => console.log("✅ MongoDB connected successfully"))
@@ -28,7 +28,7 @@ mongoose
 // Initialize Express app
 const app = express();
 
-// ✅ Fix CORS Allowed Origins for Local & Vercel
+// ✅ Fix CORS Allowed Origins for Local & Render
 const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean);
 
 app.use(
@@ -58,13 +58,10 @@ app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 
-// ✅ Fix: Handle Local & Vercel Deployment
+// ✅ Ensure the Server Always Binds to a Port (Fix for Render)
 const PORT = process.env.PORT || 3000;
 
-// Only listen when running locally, NOT on Vercel
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
-}
+// ✅ Always Listen on Render & Local
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
-// ✅ Export app for Vercel
-module.exports = app;
+module.exports = app; // Export for potential testing or Vercel use
