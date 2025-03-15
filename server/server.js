@@ -19,11 +19,20 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
-// ✅ Improved MongoDB Connection for Local & Render
+// ✅ Check if MONGO_URI is properly set (Debugging for Render)
+if (!process.env.MONGO_URI) {
+  console.error("❌ ERROR: MONGO_URI is not defined! Check your environment variables.");
+  process.exit(1); // Stop the server if no MongoDB URI
+}
+
+// ✅ Connect to MongoDB (Fix for Render & Local)
 mongoose
-  .connect(process.env.MONGO_URI, { bufferCommands: false })
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, bufferCommands: false })
   .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((error) => console.error("❌ MongoDB connection error:", error));
+  .catch((error) => {
+    console.error("❌ MongoDB connection error:", error);
+    process.exit(1); // Exit if MongoDB fails to connect
+  });
 
 // Initialize Express app
 const app = express();
@@ -59,9 +68,15 @@ app.use("/api/shop/review", shopReviewRouter);
 app.use("/api/common/feature", commonFeatureRouter);
 
 // ✅ Ensure the Server Always Binds to a Port (Fix for Render)
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000; // Render assigns PORT dynamically
+const HOST = "0.0.0.0"; // Required for Render
 
-// ✅ Always Listen on Render & Local
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+const server = app.listen(PORT, HOST, () => {
+  console.log(`🚀 Server running on http://${HOST}:${PORT}`);
+});
+
+// ✅ Increase Keep-Alive Timeout to Avoid Worker Crashes on Render
+server.keepAliveTimeout = 120000; // 120 seconds
+server.headersTimeout = 120000; // 120 seconds
 
 module.exports = app; // Export for potential testing or Vercel use
