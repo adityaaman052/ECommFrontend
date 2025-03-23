@@ -5,6 +5,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const compression = require('compression');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
@@ -18,6 +21,12 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+
+// Rate limiter configuration
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
 
 // ✅ Check if MONGO_URI is properly set (Debugging for Render)
 if (!process.env.MONGO_URI) {
@@ -49,9 +58,24 @@ app.use(
   })
 );
 
+// Apply security middlewares
+app.use(helmet());
+app.use(compression()); // Add compression
+app.use(limiter); // Apply rate limiting
+
 // Use middlewares for cookie parsing and JSON body parsing
 app.use(cookieParser());
 app.use(express.json());
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    status: 'error',
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
 
 // Define routes for different API endpoints
 app.use("/api/auth", authRouter);
